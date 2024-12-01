@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+   <title>Leaflet Map with Sidebar</title>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+   <link rel="shortcut icon" type="image/x-icon" src="./assets/images/favicon-32x32.png">
+   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+      integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+      crossorigin="">
+   <link rel="stylesheet" href="reset.css">
+   <link rel="stylesheet" href="style.css">
+   <link href="https://www.cssscript.com/demo/sticky.css" rel="stylesheet" type="text/css">
+   <link href="https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css" rel="stylesheet" />
+
+</head>
+
+<body>
+
+   <div class="side-bar">
+      <div class="logo-name-wrapper">
+         <div class="logo-name">
+            <img src="./assets/images/logo.png" class="logo" alt="logo app" srcset="" />
+         </div>
+         <button class="logo-name__button">
+            <i class="bx bx-arrow-from-right logo-name__icon" id="logo-name__icon"></i>
+         </button>
+      </div>
+      <ul class="features-list">
+         <div class="category-header">Tabelas Interativas</div>
+         <li class="features-item inbox active"onclick="openPopup()">
+            <i class="bx bxs-home-heart features-item-icon inbox-icon"><span class="status"></span></i>
+            <span class="features-item-text" id="group1">TABELA REANIMAÇÕES</span>
+         </li>
+         <li class="features-item draft">
+            <i class="bx bx-file-blank features-item-icon"></i>
+            <span class="features-item-text"id="group2">Lojas</span>
+         </li>
+         <li class="features-item star">
+            <i class="bx bx-star features-item-icon"></i>
+            <span class="features-item-text"id="group3">Garagens</span>
+         </li>
+         <!-- <li class="features-item sent">
+            <i class="bx bx-send features-item-icon"></i>
+            <span class="features-item-text">Apartamentos</span>
+         </li>
+         <li class="features-item trash">
+            <i class="bx bx-trash features-item-icon"></i>
+            <span class="features-item-text">Lavagens</span>
+         </li>
+         <li class="features-item spam">
+            <i class="bx bx-car features-item-icon"></i>
+            <span class="features-item-text">Corridas Legais</span>
+         </li>
+         <li class="features-item spam">
+            <i class="bx bx-mask features-item-icon"></i>
+            <span class="features-item-text">Corridas ILegais</span>
+         </li> -->
+      </ul>
+      <ul class="category-list">
+         <div class="category-header">Estatísticas e Mapas</div>
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="Richm">Zone - Richm</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="Golf">Zone - Golf</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="Rockf">Zone - Rockf</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="Morn">Zone - Morn</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="Movie">Zone - Movie</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="Koreat">Zone - Koreat</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="LosPuer">Zone - LosPuer</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="Mirr">Zone - Mirr</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="East_V">Zone - East_V</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="DelPe">Zone - DelPe</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="PBluff">Zone - PBluff</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="AirP">Zone - AirP</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="Tatamo">Zone - Tatamo</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="Murri">Zone - Murri</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="LMesa">Zone - LMesa</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="Vine">Zone - Vine</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="Downt">Zone - Downt</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="STRAW">Zone - STRAW</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="Prol">Zone - Prol</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="RANCHO">Zone - RANCHO</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="ChamH">Zone - ChamH</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="Davis">Zone - Davis</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="Lago">Zone - Lago</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="CHU">Zone - CHU</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="TongVaH">Zone - TongVaH</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="BhamCa">Zone - BhamCa</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="NCHU">Zone - NCHU</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="CANNY">Zone - CANNY</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="CMSW">Zone - CMSW</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="PalFor">Zone - PalFor</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="Paleto">Zone - Paleto</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="MTChil">Zone - MTChil</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="MTGordo">Zone - MTGordo</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="BradP">Zone - BradP</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="SanChia">Zone - SanChia</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="Desrt">Zone - Desrt</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="WindF">Zone - WindF</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="PalHigh">Zone - PalHigh</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="PBOX">Zone - PBOX</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="TEXTI">Zone - TEXTI</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="SKID">Zone - SKID</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="Beach">Zone - Beach</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="Jail">Zone - Jail</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="CHIL">Zone - CHIL</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="Stad">Zone - Stad</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="Termina">Zone - Termina</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="Banning">Zone - Banning</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="Elysian">Zone - Elysian</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="DTVine">Zone - DTVine</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="WVine">Zone - WVine</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="Burton">Zone - Burton</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="RGLEN">Zone - RGLEN</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="Observ">Zone - Observ</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="Galli">Zone - Galli</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="Baytre">Zone - Baytre</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="VCana">Zone - VCana</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="DelSol">Zone - DelSol</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="Alta">Zone - Alta</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="BradT">Zone - BradT</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="GrapeS">Zone - GrapeS</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="Sandy">Zone - Sandy</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="Alamo">Zone - Alamo</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="Slab">Zone - Slab</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="EBuro">Zone - EBuro</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="Cypre">Zone - Cypre</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="ArmyB">Zone - ArmyB</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="Harmo">Zone - Harmo</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="ZP_ORT">Zone - ZP_ORT</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="DeLBe">Zone - DeLBe</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="Greatc">Zone - Greatc</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="Vesp">Zone - Vesp</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="Hors">Zone - Hors</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="Hawick">Zone - Hawick</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="Zancudo">Zone - Zancudo</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="MTJose">Zone - MTJose</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="zQ_UAR">Zone - zQ_UAR</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="Oceana">Zone - Oceana</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="ProcoB">Zone - ProcoB</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="ELGorL">Zone - ELGorL</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="Palmpow">Zone - Palmpow</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="OCEANA">Zone - OCEANA</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="Delbe">Zone - Delbe</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="HumLab">Zone - HumLab</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="CalafB">Zone - CalafB</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="Galfish">Zone - Galfish</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="Noose">Zone - Noose</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="CCreak">Zone - CCreak</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="LAGO">Zone - LAGO</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="TongvaV">Zone - TongvaV</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="BanhamCa">Zone - BanhamCa</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="TongvaH">Zone - TongvaH</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="LAct">Zone - LAct</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="LDam">Zone - LDam</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="PalCov">Zone - PalCov</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="LegSqu">Zone - LegSqu</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         
+             <li class="category-item">
+                 <span class="category-item-status" style="background-color: rgb(255, 0, 0)"></span>
+                 <span class="category-item-text" id="RTRAK">Zone - RTRAK</span>
+                 <span class="category-item-number">Subzone:</span>
+             </li>
+                         </ul>
+      <ul class="chat-list">
+         <div class="chat-header">recent chats</div>
+         <button class="chat-new-btn">
+            <i class="bx bxs-plus-circle chat-icon"></i>
+            <span class="chat-new-btn-text">Start New Chat</span>
+            <span class="tooltip">New Chat</span>
+         </button>
+         <li class="chat-item">
+            <span class="chat-item-avatar-wrapper has-message">
+               <img src="./assets/images/chris-evans.png" alt="avatar" class="chat-item-avatar" />
+            </span>
+            <span class="chat-item-name">TOTAL DE DESMAIOS</span>
+            <span class="chat-item-number">17.278</span>
+         </li>
+         <li class="chat-item">
+            <span class="chat-item-avatar-wrapper has-message">
+               <img src="./assets/images/chris-evans.png" alt="avatar" class="chat-item-avatar" />
+            </span>
+            <span class="chat-item-name">ACABOU O TEMPO</span>
+            <span class="chat-item-number">3.413</span>
+         </li>
+      </ul>
+   </div>
+
+
+   <div class="frame">
+
+   </div>
+<div id="map"></div>
+
+
+
+   <script type="text/javascript">
+
+      const sideBar = document.querySelector('.side-bar');
+      const button = document.querySelector('.side-bar .logo-name__button');
+      const arrowCollapse = document.querySelector('#logo-name__icon');
+
+      button.addEventListener('click', function () {
+         sideBar.classList.toggle('collapse');
+         arrowCollapse.classList.toggle('collapse');
+         if (arrowCollapse.classList.contains('collapse')) {
+            arrowCollapse.classList = 'bx bx-arrow-from-left logo-name__icon collapse';
+         } else {
+            arrowCollapse.classList = 'bx bx-arrow-from-right logo-name__icon';
+         }
+      });
+
+
+      
+
+   </script>
+</body>
+
+
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+   integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+   crossorigin=""></script>
+     
+<script type="module" src="scripts/script.js"></script>
+</body>
+
+</html>
+<!-- <button id="menu-toggle">Mostrar/Esconder Menu</button> -->
