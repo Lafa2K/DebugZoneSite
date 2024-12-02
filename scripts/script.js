@@ -22,9 +22,11 @@ var CUSTOM_CRS = L.extend({}, L.CRS.Simple, {
     infinite: true
 });
 
-var SateliteStyle = L.tileLayer('mapStyles/styleSatelite/{z}/{x}/{y}.jpg', {minZoom: 0, maxZoom: 8}),
-    AtlasStyle = L.tileLayer('mapStyles/styleAtlas/{z}/{x}/{y}.jpg', {minZoom: 0, maxZoom: 5}),
-    GridStyle = L.tileLayer('mapStyles/styleGrid/{z}/{x}/{y}.png', {minZoom: 0, maxZoom: 5});
+
+var AtlasStyle = L.tileLayer('https://lafa2k.github.io/DebugZoneSite//mapStyles/styleAtlas/{z}/{x}/{y}.jpg', {
+    minZoom: 0,
+    maxZoom: 8
+});
 
 var ExampleGroup = L.layerGroup();
 var Icons = { "Example": ExampleGroup };
@@ -43,16 +45,10 @@ var mymap = L.map('map', {
 
 var layersControl = L.control.layers(
     { 
-        // "Satelite": SateliteStyle,
         "Atlas": AtlasStyle,
-        // "Grid": GridStyle
     },
     Icons
 ).addTo(mymap);
-
-var X = 0;
-var Y = 0;
-L.marker([X, Y], {icon: customIcon(1)}).addTo(Icons["Example"]).bindPopup("I am here.");
 
 var markerStatus = {
     group1: null,
@@ -75,50 +71,8 @@ var markers = {
     ]
 };
 
-function loadGroup(group) {
-    if (markerStatus[group] == null) {
-        for (var i = 0; i < markers[group].length; i++) {
-            markers[group][i].addTo(mymap);
-        }
-        markerStatus[group] = true;
-    } else {
-        for (var i = 0; i < markers[group].length; i++) {
-            mymap.removeLayer(markers[group][i]);
-        }
-        markerStatus[group] = null;
-    }
-}
-
-function addClickListener(id, func) {
-    const element = document.getElementById(id);
-    if (!element) return;
-    element.addEventListener('click', function(event) {
-        event.preventDefault();
-        func();
-    });
-}
-
-function addGroupClickListeners() {
-    addClickListener('group1', function() { loadGroup('group1'); });
-    addClickListener('group2', function() { loadGroup('group2'); });
-    addClickListener('group3', function() { loadGroup('group3'); });
-}
-
-function customIcon(icon) {
-    return L.icon({
-        iconUrl: `blips/${icon}.png`,
-        iconSize: [20, 20],
-        iconAnchor: [20, 20],
-        popupAnchor: [-10, -27]
-    });
-}
-
-var line_horizontal = L.polyline([[0, 10], [0, -10]], { color: 'red', weight: 1 }).addTo(mymap);
-var line_vertical = L.polyline([[10, 0], [-10, 0]], { color: 'red', weight: 1 }).addTo(mymap);
-
-
-
-const drawnLayers = {}; // Objeto para armazenar as zonas desenhadas por botão
+const zoneLabels = [];
+const drawnLayers = {};
 
 function drawZoneOnMap(zoneData, buttonId) {
     const latLngs = [
@@ -129,14 +83,11 @@ function drawZoneOnMap(zoneData, buttonId) {
     ];
     const color = `rgb(${zoneData.R}, ${zoneData.G}, ${zoneData.B})`;
 
-    // Cria o polígono
     const polygon = L.polygon(latLngs, { color: color, fillColor: color, fillOpacity: 0.5 });
 
-    // Calcula o centro do retângulo
     const centerLat = (zoneData.bbmin[1] + zoneData.bbmax[1]) / 2;
     const centerLng = (zoneData.bbmin[0] + zoneData.bbmax[0]) / 2;
 
-    // Adiciona o marcador no centro com texto adicional
     const marker = L.marker([centerLat, centerLng], {
         icon: L.divIcon({
             className: 'zone-label',
@@ -146,28 +97,67 @@ function drawZoneOnMap(zoneData, buttonId) {
         })
     });
 
-    // Agrupa o polígono e o marcador em uma LayerGroup
+    zoneLabels.push(marker);
     const group = L.layerGroup([polygon, marker]);
 
     return group;
+}
+
+function removeLabels() {
+    zoneLabels.forEach(label => {
+        mymap.removeLayer(label);
+    });
+    zoneLabels.length = 0;
+}
+function removeAllZones() {
+    for (const category in drawnLayers) {
+        if (drawnLayers.hasOwnProperty(category)) {
+            mymap.removeLayer(drawnLayers[category]);
+            delete drawnLayers[category];
+        }
+    }
+}
+
+function drawAllZones() {
+    removeAllZones();
+    for (const categoryId in zones) {
+        if (zones.hasOwnProperty(categoryId)) {
+            const selectedZones = zones[categoryId];
+            const layerGroup = L.layerGroup();
+            selectedZones.forEach(zone => {
+                const zoneLayer = drawZoneOnMap(zone, categoryId);
+                layerGroup.addLayer(zoneLayer);
+            });
+            layerGroup.addTo(mymap);
+            drawnLayers[categoryId] = layerGroup;
+        }
+    }
+}
+
+
+function addCategoryClickListener() {
+    const categoryItems = document.querySelectorAll('.category-item-text');
+
+    categoryItems.forEach(item => {
+        item.addEventListener('click', function () {
+            const categoryId = item.id; 
+            handleCategoryClick(categoryId);
+        });
+    });
 }
 
 function handleCategoryClick(categoryId) {
     const selectedZones = zones[categoryId];
     if (!selectedZones) return;
 
-    // Seleciona os elementos visuais relacionados
     const statusElement = document.querySelector(`#${categoryId}`).previousElementSibling;
     const numberElement = document.querySelector(`#${categoryId}`).nextElementSibling;
 
-    // Alterna entre exibir e ocultar as zonas
     if (drawnLayers[categoryId]) {
         mymap.removeLayer(drawnLayers[categoryId]);
         delete drawnLayers[categoryId];
-        // Atualiza o indicador visual para vermelho
         if (statusElement) statusElement.style.backgroundColor = "#FF0000";
     } else {
-        // Cria e adiciona as zonas ao mapa
         const layerGroup = L.layerGroup();
         selectedZones.forEach(zone => {
             const zoneLayer = drawZoneOnMap(zone, categoryId);
@@ -176,42 +166,24 @@ function handleCategoryClick(categoryId) {
 
         layerGroup.addTo(mymap);
         drawnLayers[categoryId] = layerGroup;
-        // Atualiza o indicador visual para verde
         if (statusElement) statusElement.style.backgroundColor = "#00FF00";
-
-        // Atualiza o número de subzonas exibido
         if (numberElement) numberElement.textContent = `Subzone: ${selectedZones.length}`;
     }
 }
 
-// CSS para os rótulos
-const css = `
-.zone-label {
-    font-size: 12px;
-    font-weight: bold;
-    color: #000;
-    text-align: center;
-    pointer-events: none;
-    padding: 5px;
-    border-radius: 3px;
-}
-`;
+function addControlButtons() {
+    document.getElementById('drawAllZonesButton').addEventListener('click', function() {
+        drawAllZones();
+    });
+    document.getElementById('removeAllZonesButton').addEventListener('click', function() {
+        removeAllZones();
+    });
 
-// Adiciona o CSS dinamicamente ao documento
-const style = document.createElement('style');
-style.textContent = css;
-document.head.appendChild(style);
-
-// Adiciona eventos de clique a cada botão da lista
-function addCategoryClickListener() {
-    const categoryItems = document.querySelectorAll('.category-item-text');
-
-    categoryItems.forEach(item => {
-        item.addEventListener('click', function () {
-            const categoryId = item.id; 
-            handleCategoryClick(categoryId); 
-        });
+    document.getElementById('removeAllLabelsButton').addEventListener('click', function() {
+        removeLabels();
     });
 }
 
+// Chamadas iniciais
 addCategoryClickListener();
+addControlButtons();
