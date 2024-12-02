@@ -118,7 +118,7 @@ var line_vertical = L.polyline([[10, 0], [-10, 0]], { color: 'red', weight: 1 })
 
 
 
-const drawnLayers = {}; // Objeto para armazenar as zonas desenhadas por botão
+const drawnLayers = {}; 
 
 function drawZoneOnMap(zoneData, buttonId) {
     const latLngs = [
@@ -129,14 +129,11 @@ function drawZoneOnMap(zoneData, buttonId) {
     ];
     const color = `rgb(${zoneData.R}, ${zoneData.G}, ${zoneData.B})`;
 
-    // Cria o polígono
     const polygon = L.polygon(latLngs, { color: color, fillColor: color, fillOpacity: 0.5 });
 
-    // Calcula o centro do retângulo
     const centerLat = (zoneData.bbmin[1] + zoneData.bbmax[1]) / 2;
     const centerLng = (zoneData.bbmin[0] + zoneData.bbmax[0]) / 2;
 
-    // Adiciona o marcador no centro com texto adicional
     const marker = L.marker([centerLat, centerLng], {
         icon: L.divIcon({
             className: 'zone-label',
@@ -156,11 +153,9 @@ function handleCategoryClick(categoryId) {
     const selectedZones = zones[categoryId];
     if (!selectedZones) return;
 
-    // Seleciona os elementos visuais relacionados
     const statusElement = document.querySelector(`#${categoryId}`).previousElementSibling;
     const numberElement = document.querySelector(`#${categoryId}`).nextElementSibling;
 
-    // Alterna entre exibir e ocultar as zonas
     if (drawnLayers[categoryId]) {
         mymap.removeLayer(drawnLayers[categoryId]);
         delete drawnLayers[categoryId];
@@ -184,7 +179,6 @@ function handleCategoryClick(categoryId) {
     }
 }
 
-// CSS para os rótulos
 const css = `
 .zone-label {
     font-size: 12px;
@@ -197,12 +191,10 @@ const css = `
 }
 `;
 
-// Adiciona o CSS dinamicamente ao documento
 const style = document.createElement('style');
 style.textContent = css;
 document.head.appendChild(style);
 
-// Adiciona eventos de clique a cada botão da lista
 function addCategoryClickListener() {
     const categoryItems = document.querySelectorAll('.category-item-text');
 
