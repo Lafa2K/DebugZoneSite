@@ -76,32 +76,77 @@ const drawnLayers = {};
 
 function drawZoneOnMap(zoneData, buttonId) {
     const latLngs = [
-        [zoneData.bbmin[1], zoneData.bbmin[0]],
-        [zoneData.bbmin[1], zoneData.bbmax[0]],
-        [zoneData.bbmax[1], zoneData.bbmax[0]],
+        [zoneData.bbmin[1], zoneData.bbmin[0]], 
+        [zoneData.bbmin[1], zoneData.bbmax[0]], 
+        [zoneData.bbmax[1], zoneData.bbmax[0]], 
         [zoneData.bbmax[1], zoneData.bbmin[0]]
     ];
+
     const color = `rgb(${zoneData.R}, ${zoneData.G}, ${zoneData.B})`;
 
-    const polygon = L.polygon(latLngs, { color: color, fillColor: color, fillOpacity: 0.5 });
+    const polygon = L.polygon(latLngs, { 
+        color: color, 
+        fillColor: color, 
+        fillOpacity: 0.5, 
+        weight: 0.5,
+        dashArray: '5,5' 
+    });
+
+    polygon.on('mouseover', function() {
+        polygon.setStyle({
+            fillColor: 'yellow',
+            color: 'red'         
+        });
+        polygon.bindTooltip(`
+            <strong>Zona:</strong> ${zoneData.name}<br>
+            <strong>scum:</strong> ${zoneData.scumlevel || 'N/A'}<br>
+            <strong>Rótulo:</strong> ${buttonId}<br>
+            <strong>Coordenadas:</strong> ${zoneData.bbmin[0]}, ${zoneData.bbmin[1]} - ${zoneData.bbmax[0]}, ${zoneData.bbmax[1]}<br>
+            <strong>Cor:</strong> rgb(${zoneData.R}, ${zoneData.G}, ${zoneData.B})
+        `, { sticky: true }).openTooltip();
+    });
+
+    polygon.on('mouseout', function() {
+        polygon.setStyle({
+            fillColor: color, 
+            color: color 
+        });
+    });
+
+    // polygon.on('click', function() {
+    //     console.log(`Zona clicada: ${zoneData.name}`);
+        
+    //     polygon.bindTooltip(`
+    //         <strong>Zona:</strong> ${zoneData.name}<br>
+    //         <strong>scum:</strong> ${zoneData.scumlevel || 'N/A'}<br>
+    //         <strong>Rótulo:</strong> ${buttonId}<br>
+    //         <strong>Coordenadas:</strong> ${zoneData.bbmin[0]}, ${zoneData.bbmin[1]} - ${zoneData.bbmax[0]}, ${zoneData.bbmax[1]}<br>
+    //         <strong>Cor:</strong> rgb(${zoneData.R}, ${zoneData.G}, ${zoneData.B})
+    //     `, { sticky: true }).openTooltip();
+
+    // });
+
+    const marker = L.marker([0, 0], {
+        icon: L.divIcon({
+            className: 'zone-label',
+            html: `<div style="padding: 5px; font-size: 10px; color: #333;">${buttonId}<br>${zoneData.name}</div>`,
+            iconSize: [120, 60],
+            iconAnchor: [60, 30]
+        }),
+        interactive: false
+    });
 
     const centerLat = (zoneData.bbmin[1] + zoneData.bbmax[1]) / 2;
     const centerLng = (zoneData.bbmin[0] + zoneData.bbmax[0]) / 2;
-
-    const marker = L.marker([centerLat, centerLng], {
-        icon: L.divIcon({
-            className: 'zone-label',
-            html: `<div>${buttonId}<br>${zoneData.name}</div>`,
-            iconSize: [120, 60],
-            iconAnchor: [60, 30]
-        })
-    });
+    marker.setLatLng([centerLat, centerLng]);
 
     zoneLabels.push(marker);
+
     const group = L.layerGroup([polygon, marker]);
 
     return group;
 }
+
 
 function removeLabels() {
     zoneLabels.forEach(label => {
@@ -109,6 +154,7 @@ function removeLabels() {
     });
     zoneLabels.length = 0;
 }
+
 function removeAllZones() {
     for (const category in drawnLayers) {
         if (drawnLayers.hasOwnProperty(category)) {
@@ -133,7 +179,6 @@ function drawAllZones() {
         }
     }
 }
-
 
 function addCategoryClickListener() {
     const categoryItems = document.querySelectorAll('.category-item-text');
@@ -184,6 +229,5 @@ function addControlButtons() {
     });
 }
 
-// Chamadas iniciais
 addCategoryClickListener();
 addControlButtons();
