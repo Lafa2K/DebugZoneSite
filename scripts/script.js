@@ -229,5 +229,6 @@ function addControlButtons() {
     });
 }
 
+// Chamadas iniciais
 addCategoryClickListener();
 addControlButtons();
